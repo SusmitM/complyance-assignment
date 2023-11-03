@@ -10,7 +10,7 @@ import CharacterDetailCard from "../components/CharacterDetailCard";
 import { getAllFilms } from "../api/fetchFilmData";
 import { getAllSpecies } from "../api/fetchSpeciesData";
 import { getAllHomeworld } from "../api/fetchAllHomeworldData";
-import TabDropdown from "../components/tabDropdown";
+import TabDropdown from "../components/TabDropdown";
 import OptionDropdown from "../components/OptionDropdown";
 
 const tabArray = ["None", "Films", "Homeworld", "Species"];
