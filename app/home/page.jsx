@@ -7,7 +7,13 @@ import { useQuery } from "react-query";
 import { fetchPeople } from "../api/fetchPeople";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import CharacterDetailCard from "../components/CharacterDetailCard";
+import { getAllFilms } from "../api/fetchFilmData";
+import { getAllSpecies } from "../api/fetchSpeciesData";
+import { getAllHomeworld } from "../api/fetchAllHomeworldData";
+import TabDropdown from "../components/tabDropdown";
+import OptionDropdown from "../components/OptionDropdown";
 
+const tabArray = ["None", "Films", "Homeworld", "Species"];
 
 const HomePage = () => {
   const [data, setData] = useState([]);
@@ -18,16 +24,44 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCharacter, setSelectedCharcter] = useState("");
 
+  const [selectedTab, setSelectedTab] = useState(tabArray[0]);
+
+  const [selectedOption, setSelectedOption] = useState("All");
+  const [showOptionDropdown, setShowOptionDropdown] = useState(false);
+  const [options, setOptions] = useState({
+    Films: [],
+    Homeworld: [],
+    Species: [],
+  });
+
+  // function to close the character details modal
   const closeModal = () => {
     setShowModal(false);
   };
+
+  // function to open the character details modal
   const openModal = () => {
     setShowModal(true);
   };
+
   const updateSelectedCharacter = (characterData) => {
     setSelectedCharcter(characterData);
   };
 
+  // function to change page on pagination
+  const changePage = (page) => {
+    setCurrentUrl(page);
+
+    setSelectedOption("");
+    setSelectedTab(tabArray[0]);
+    setOptions({
+      Films: [],
+      Homeworld: [],
+      Species: [],
+    });
+  };
+
+  // query to fetch the people data
   const {
     data: peopleData,
     isLoading,
@@ -36,14 +70,49 @@ const HomePage = () => {
     enabled: !!currentUrl,
   });
 
-  // console.log(peopleData);
-
+  // effect to manage the peopleData state
   useEffect(() => {
     if (peopleData) {
       setData(peopleData);
     }
   }, [peopleData]);
 
+  // effect to manage the options state on selectedTab change
+  useEffect(() => {
+    setShowOptionDropdown(false);
+    if (selectedTab === "Species") {
+      const setSpecies = async () => {
+        const speciesOption = await getAllSpecies(peopleData?.results);
+
+        setOptions((prev) => ({ ...prev, Species: [...speciesOption] }));
+        setShowOptionDropdown(true);
+        setSelectedOption("All");
+      };
+      setSpecies();
+    }
+    if (selectedTab === "Films") {
+      const setFilms = async () => {
+        const filmsOption = await getAllFilms(peopleData?.results);
+
+        setOptions((prev) => ({ ...prev, Films: [...filmsOption] }));
+        setShowOptionDropdown(true);
+        setSelectedOption("All");
+      };
+      setFilms();
+    }
+    if (selectedTab === "Homeworld") {
+      const setHomeworld = async () => {
+        const homeworldOptions = await getAllHomeworld(peopleData?.results);
+
+        setOptions((prev) => ({ ...prev, Homeworld: [...homeworldOptions] }));
+        setShowOptionDropdown(true);
+        setSelectedOption("All");
+      };
+      setHomeworld();
+    }
+  }, [selectedTab]);
+
+  // function to filter people data based on filters
   const filteredPeople = () => {
     let peopleToShow = { ...data };
 
@@ -53,9 +122,33 @@ const HomePage = () => {
       );
       peopleToShow = { ...peopleToShow, results: peopleArray };
     }
+    if (selectedTab !== "None" && selectedOption !== "All") {
+      console.log(selectedTab, { selectedOption });
+
+      if (selectedTab === "Species") {
+        let peopleArray = peopleToShow?.results?.filter((peopleData) =>
+          peopleData?.species?.includes(selectedOption)
+        );
+
+        peopleToShow = { ...peopleToShow, results: peopleArray };
+      }
+      if (selectedTab === "Films") {
+        let peopleArray = peopleToShow?.results?.filter((peopleData) =>
+          peopleData?.films?.includes(selectedOption)
+        );
+
+        peopleToShow = { ...peopleToShow, results: peopleArray };
+      }
+      if (selectedTab === "Homeworld") {
+        let peopleArray = peopleToShow?.results?.filter((peopleData) =>
+          peopleData?.homeworld?.includes(selectedOption)
+        );
+
+        peopleToShow = { ...peopleToShow, results: peopleArray };
+      }
+    }
     return peopleToShow;
   };
-  console.log(filteredPeople()?.results?.length);
 
   if (isError) {
     return <div>Error fetching data</div>;
@@ -71,6 +164,28 @@ const HomePage = () => {
             selectedCharacter={selectedCharacter}
             closeModal={closeModal}
           />
+        )}
+
+        <TabDropdown
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          setSelectedOption={setSelectedOption}
+          tabArray={tabArray}
+        />
+
+        {selectedTab !== "None" ? (
+          showOptionDropdown ? (
+            <OptionDropdown
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              options={options}
+              selectedTab={selectedTab}
+            />
+          ) : (
+            <LoadingPage />
+          )
+        ) : (
+          ""
         )}
 
         {isLoading ? (
@@ -94,7 +209,9 @@ const HomePage = () => {
           <div className="w-full flex justify-center items-center">
             <button
               disabled={!filteredPeople()?.previous}
-              onClick={() => setCurrentUrl(filteredPeople()?.previous)}
+              onClick={() => {
+                changePage(filteredPeople()?.previous);
+              }}
               className="ml-2 bg-blue-300 hover:bg-blue-400 text-white-500 font-bold py-2 px-4 rounded focus:outline-none"
             >
               <FcPrevious />
@@ -102,7 +219,9 @@ const HomePage = () => {
             <span className="m-2 font-bold">{currentUrl.split("=")[1]}</span>
             <button
               disabled={!filteredPeople()?.next}
-              onClick={() => setCurrentUrl(filteredPeople()?.next)}
+              onClick={() => {
+                changePage(filteredPeople()?.next);
+              }}
               className="ml-2 bg-blue-300 hover:bg-blue-400 text-white-500 font-bold py-2 px-4 rounded focus:outline-none"
             >
               <FcNext />
