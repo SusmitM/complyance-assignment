@@ -1,4 +1,5 @@
-## Starwars Character App
+## Starwars Character App https://complyance-assignment-susmit.vercel.app/
+
 Features
 
 - JWT Authentication with cookies expiry of 30 days.
@@ -6,8 +7,11 @@ Features
 - Character details modal with character’s homeworld data.
 - Character data  searching and filtering.
 - Filtering on the basis homeworld, film, or species.
-- Pagination
+- Pagination.
 - Modal close on outside click.
+- Fully Responsive.
+- API calls using React-Query.
+- Loaders and handeling of Error states.
 
 
 ## Getting Started
