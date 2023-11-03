@@ -6,7 +6,7 @@ const Header = () => {
   const { push } = useRouter();
   
   return (
-    <header className="bg-gray-800 text-white py-4 px-6 flex items-center justify-between fixed w-full">
+    <header className="bg-gray-800 text-white py-4 px-6 mb-8 flex items-center justify-between w-full">
       <div>
         <h1 className="text-lg font-bold">Starwars Character App</h1>
       </div>
