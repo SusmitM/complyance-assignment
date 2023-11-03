@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { fetchColor } from "../api/fetchColor";
+import LoadingPage from "../loading";
 
 const CharacterCard = ({
   characterData,
@@ -43,7 +44,7 @@ const CharacterCard = ({
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold">{characterData?.name}</h3>
-        <p> {isLoading ? "Loading..." : ""}</p>
+        <p> {isLoading ? <LoadingPage/> : ""}</p>
       </div>
     </div>
   );

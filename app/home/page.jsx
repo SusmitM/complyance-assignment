@@ -123,7 +123,7 @@ const HomePage = () => {
       peopleToShow = { ...peopleToShow, results: peopleArray };
     }
     if (selectedTab !== "None" && selectedOption !== "All") {
-      console.log(selectedTab, { selectedOption });
+      
 
       if (selectedTab === "Species") {
         let peopleArray = peopleToShow?.results?.filter((peopleData) =>

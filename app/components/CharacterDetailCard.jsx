@@ -3,6 +3,7 @@ import { convertDateFormat } from "../utils/convertDateFormat";
 import { useQuery } from "react-query";
 import { fetchHomeworldData } from "../api/fetchHomeworldData";
 import {GiCancel} from 'react-icons/gi';
+import LoadingPage from "../loading";
 
 const CharacterDetailCard = ({ selectedCharacter, closeModal }) => {
 
@@ -40,7 +41,7 @@ const CharacterDetailCard = ({ selectedCharacter, closeModal }) => {
           <div>
             <h2 className="text-md font-bold">HomeWorld Info</h2>
             {isLoading ? (
-              <div>Loading...</div>
+              <LoadingPage/>
             ) : (
               <div>
                 {" "}
