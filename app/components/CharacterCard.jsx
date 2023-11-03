@@ -44,7 +44,7 @@ const CharacterCard = ({
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold">{characterData?.name}</h3>
-        <p> {isLoading ? <LoadingPage/> : ""}</p>
+        {isLoading ? <LoadingPage/> : ""}
       </div>
     </div>
   );

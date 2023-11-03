@@ -13,18 +13,17 @@ export default function LoginPage() {
   });
 
   const login = async (payload) => {
-    const { data } = await axios.post('/api/auth/login', payload);
+    const { data } = await axios.post("/api/auth/login", payload);
     return data;
   };
- 
+
   const { mutate } = useMutation(login, {
-  
     onSuccess: (data) => {
       alert(data?.message);
-     
-      push("/home"); 
+
+      push("/people");
     },
-   
+
     onError: (error) => {
       alert(error?.message);
     },
@@ -37,7 +36,7 @@ export default function LoginPage() {
       username: formData.username,
       password: formData.password,
     };
-   
+
     mutate(payload);
   };
   return (
@@ -57,7 +56,9 @@ export default function LoginPage() {
               id="username"
               name="username"
               required
-              onChange={(e)=>setFormdata(prev=>({...prev,username:e.target.value}))}
+              onChange={(e) =>
+                setFormdata((prev) => ({ ...prev, username: e.target.value }))
+              }
               value={formData?.username}
               className="w-full bg-gray-100 focus:bg-white rounded border-2 focus:border-blue-500 p-2"
             />
@@ -69,11 +70,15 @@ export default function LoginPage() {
               id="password"
               name="password"
               value={formData?.password}
-              onChange={(e)=>setFormdata(prev=>({...prev,password:e.target.value}))}
+              onChange={(e) =>
+                setFormdata((prev) => ({ ...prev, password: e.target.value }))
+              }
               required
               className="w-full bg-gray-100 focus:bg-white rounded border-2 focus:border-blue-500 p-2"
             />
-            <p className="text-red-600 text-sm font-bold">*Use admin as Username and Password</p>
+            <p className="text-red-600 text-sm font-bold">
+              *Use admin as Username and Password
+            </p>
           </div>
 
           <button
