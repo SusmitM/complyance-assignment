@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchColor } from "../api/fetchColor";
 
-const CharacterCard = ({ characterData, updateSelectedCharacter,openModal }) => {
+const CharacterCard = ({
+  characterData,
+  updateSelectedCharacter,
+  openModal,
+}) => {
   const {
     data: cardColor,
     isLoading,
@@ -15,16 +18,15 @@ const CharacterCard = ({ characterData, updateSelectedCharacter,openModal }) => 
     }
   );
 
- 
-
-  
-
   if (isError) {
     return <div>`${characterData?.name} Card Not Available`</div>;
   }
   return (
     <div
-    onClick={()=>{ updateSelectedCharacter(characterData);openModal()}}
+      onClick={() => {
+        updateSelectedCharacter(characterData);
+        openModal();
+      }}
       style={{ backgroundColor: cardColor }}
       className="w-full md:w-64 mx-4 my-4 shadow-md transition-transform duration-300 hover:shadow-2xl  hover:-translate-y-2 transition-all"
     >

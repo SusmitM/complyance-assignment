@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React from "react";
 import { convertDateFormat } from "../utils/convertDateFormat";
 import { useQuery } from "react-query";
 import { fetchHomeworldData } from "../api/fetchHomeworldData";

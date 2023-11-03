@@ -2,7 +2,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 
 
-const Header = () => {
+const Header = ({setSearchData,searchData}) => {
   const { push } = useRouter();
   
   return (
@@ -11,7 +11,9 @@ const Header = () => {
         <h1 className="text-lg font-bold">Starwars Character App</h1>
       </div>
       <div className="w-1/3 md:w-1/2 lg:w-1/3">
-        <input
+        <input 
+        value={searchData}
+        onChange={(e)=>setSearchData(e.target.value)}
           type="text"
           placeholder="Search"
           className="w-full bg-gray-700 text-white border border-gray-600 rounded-md py-1 px-2"
