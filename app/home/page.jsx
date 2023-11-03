@@ -6,6 +6,7 @@ import CharacterCard from "../components/CharacterCard";
 import { useQuery } from "react-query";
 import { fetchPeople } from "../api/fetchPeople";
 import { FcNext, FcPrevious  } from 'react-icons/fc';
+import CharacterDetailCard from "../components/CharacterDetailCard";
 
 
 const HomePage = () => {
@@ -13,6 +14,18 @@ const HomePage = () => {
   const [currentUrl, setCurrentUrl] = useState(
     "https://swapi.dev/api/people/?page=1"
   );
+  const[showModal,setShowModal]=useState(false);
+  const [selectedCharacter,setSelectedCharcter]=useState("")
+
+  const closeModal=()=>{
+    setShowModal(false);
+  }
+  const openModal=()=>{
+    setShowModal(true);
+  }
+  const updateSelectedCharacter=(characterData)=>{
+    setSelectedCharcter(characterData)
+  }
 
   const {
     data: peopleData,
@@ -43,17 +56,19 @@ const HomePage = () => {
   return (
     <div>
       <Header />
+
       <div className="mt-5">
         {isLoading ? (
           <LoadingPage />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-4 justify-center items-center">
             {filteredPeople()?.results?.map((item) => (
-              <CharacterCard key={item?.name} characterData={item} />
+              <CharacterCard key={item?.name} characterData={item} openModal={openModal}  updateSelectedCharacter={ updateSelectedCharacter} />
             ))}
           </div>
         )}
-      </div>
+       {showModal &&  <CharacterDetailCard selectedCharacter={selectedCharacter} closeModal={closeModal} />}
+      
 
       {!isLoading && (
         <div className="w-full flex justify-center items-center">
@@ -74,6 +89,7 @@ const HomePage = () => {
           </button>
         </div>
       )}
+      </div>
     </div>
   );
 };

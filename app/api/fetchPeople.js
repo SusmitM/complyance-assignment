@@ -8,3 +8,4 @@ export const fetchPeople=async (url = "https://swapi.dev/api/people/?page=1")=> 
     throw new Error("Error fetching data");
   }
 }
+
