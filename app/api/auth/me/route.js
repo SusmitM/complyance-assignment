@@ -21,14 +21,13 @@ export async function GET() {
 
   const { value } = token;
 
-  // Always check this
   const secret = process.env.JWT_SECRET || "";
 
   try {
     verify(value, secret);
 
     const response = {
-      user: "Super Top Secret User",
+      user: "Welcome User",
     };
 
     return new Response(JSON.stringify(response), {

@@ -3,7 +3,7 @@ import { serialize } from "cookie";
 import { sign } from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
-const MAX_AGE = 60 * 60 * 24 * 30; // days;
+const MAX_AGE = 60 * 60 * 24 * 30; 
 
 export async function POST(request) {
   const body = await request.json();
@@ -19,7 +19,7 @@ export async function POST(request) {
     );
   }
 
-  // Always check this
+  
   const secret = process.env.JWT_SECRET || "";
 
   const token = sign(
